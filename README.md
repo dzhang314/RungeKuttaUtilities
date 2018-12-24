@@ -1,5 +1,4 @@
-# RungeKuttaUtilities
-
+# RungeKuttaUtilities v1.1
 
 **RungeKuttaUtilities** is a Wolfram Language package that automates
 the derivation of order conditions for Runge-Kutta methods. This
@@ -19,6 +18,10 @@ done in a fashion that avoids having to explicitly compute the
 trees themselves, which is where
 `NumericalDifferentialEquationAnalysis` spends much of its time and
 memory.
+
+**New in v1.1:** **RungeKuttaUtilities** now provides the
+`ButcherSigmaTable` function for calculating principal error
+coefficients.
 
 # Installation
 
