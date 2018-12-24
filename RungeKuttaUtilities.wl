@@ -3,9 +3,9 @@
 (* :Title: RungeKuttaUtilities *)
 (* :Context: RungeKuttaUtilities` *)
 (* :Author: David K. Zhang *)
-(* :Date: 2017-12-27 *)
+(* :Date: 2018-12-23 *)
 
-(* :Package Version: 1.0 *)
+(* :Package Version: 1.1 *)
 (* :Wolfram Language Version: 11.2 *)
 
 (* :Summary: RungeKuttaUtilities is a Wolfram Language package that automates
@@ -26,7 +26,7 @@
              NumericalDifferentialEquationAnalysis spends much of its time and
              memory. *)
 
-(* :Copyright: (c) 2017-2018 David K. Zhang
+(* :Copyright: (c) 2017-2019 David K. Zhang
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -71,6 +71,12 @@ ButcherConditionTable::usage = "\!\(\*RowBox[{\"ButcherConditionTable\", \
 that define a Runge-Kutta method of order \!\(\*StyleBox[\"n\", \"TI\"]\) \
 using stage-independent tensor notation.";
 
+ButcherSigmaTable::usage = "\!\(\*RowBox[{\"ButcherSigmaTable\", \"[\", \
+StyleBox[\"n\", \"TI\"], \"]\"}]\) gives a list containing the symmetry of \
+each rooted tree on \!\(\*StyleBox[\"n\", \"TI\"]\) vertices in the order \
+given by \!\(\*RowBox[{\"ButcherTreeTable\", \"[\", \
+StyleBox[\"n\", \"TI\"], \"]\"}]\).";
+
 Begin["`Private`"];
 
 monomials[{x_}, n_Integer] := {x^n};
@@ -101,6 +107,14 @@ ButcherPhiTable[n_Integer?Positive] := ButcherPhiTable[n] =
 ButcherConditionTable[1] = {\[FormalB].\[FormalE] == 1};
 ButcherConditionTable[n_Integer?Positive] := MapThread[Equal,
 	{ButcherPhiTable[n], 1 / ButcherGammaTable[n]}];
+
+sigma[1] = sigma[\[FormalF]] = 1;
+sigma[\[FormalF][t_]] := With[{facs = FactorList[t]}, Times[
+	Times @@ Factorial[Last /@ facs],
+	Times @@ Power @@@ MapAt[sigma, facs, {All, 1}]]];
+
+ButcherSigmaTable[n_Integer?Positive] := ButcherSigmaTable[n] =
+	sigma /@ ButcherTreeTable[n];
 
 End[]; (* `Private` *)
 EndPackage[]; (* RungeKuttaUtilities` *)
